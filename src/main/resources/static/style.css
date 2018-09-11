@@ -1,0 +1,20 @@
+.avatar-initials {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;	
+	font-size: 15px;
+	color: #000;
+	text-align: center;
+	line-height: 60px;
+	margin: 10px;
+}
+
+.avatar-offline {
+	background: #e8f1f2;
+	opacity: .5;
+}
+
+.avatar-online {
+	background: #39c65c;
+	opacity: .6;
+}

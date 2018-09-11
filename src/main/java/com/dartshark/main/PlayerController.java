@@ -14,20 +14,28 @@
  * limitations under the License.
  */
 
-package com.dartshark.data;
+package com.dartshark.main;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public interface ActiveWebSocketPlayerRepository
-		extends JpaRepository<ActiveWebSocketPlayer, String> {
+import com.dartshark.data.Player;
+import com.dartshark.data.PlayerRepository;
 
-//	@Query("select DISTINCT(u.username) from ActiveWebSocketPlayer u")
-//	List<String> findAllActiveUsers();
+@RestController
+public class PlayerController {
+	PlayerRepository playerRepo;
 	
-	@Query("SELECT u FROM ActiveWebSocketPlayer u")
-	Collection<ActiveWebSocketPlayer> findAllActiveUsers();
-}
+	@Autowired
+	public PlayerController(PlayerRepository playerRepo) {
+		this.playerRepo = playerRepo;
+	}
 
+	@RequestMapping("/player/all")
+	public List<Player> returnAllPlayers() {
+		return playerRepo.findAll();
+	}
+}

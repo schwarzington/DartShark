@@ -1,6 +1,6 @@
 package com.dartshark.main;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
+import com.dartshark.data.ActiveWebSocketPlayer;
 import com.dartshark.data.ActiveWebSocketPlayerRepository;
 import com.dartshark.data.InstantMessage;
 import com.dartshark.data.Player;
@@ -33,7 +34,7 @@ public class MessageController {
 	}
 
 	@SubscribeMapping("/users")
-	public List<String> subscribeMessages() throws Exception {
+	public Collection<ActiveWebSocketPlayer> subscribeMessages() throws Exception {
 		return this.activePlayerRepository.findAllActiveUsers();
 	}
 	

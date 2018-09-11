@@ -68,6 +68,7 @@ dependencies {
     compile("org.webjars:webjars-locator-core")
     compile("org.webjars:sockjs-client:1.0.2")
     compile("org.webjars:stomp-websocket:2.3.3")
+    compile("org.webjars.bower:popper.js:1.14.4")
 	compile("org.springframework.session:spring-session-jdbc:2.0.5.RELEASE")
 	compile("org.springframework:spring-web:5.0.8.RELEASE")
 	compile "com.h2database:h2"

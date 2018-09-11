@@ -23,17 +23,21 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.dartshark.data.ActiveWebSocketPlayerRepository;
+import com.dartshark.data.Player;
+import com.dartshark.data.PlayerRepository;
 
 public class WebSocketDisconnectHandler<S>
 		implements ApplicationListener<SessionDisconnectEvent> {
 	private ActiveWebSocketPlayerRepository repository;
 	private SimpMessageSendingOperations messagingTemplate;
+	private PlayerRepository playerRepo;
 
 	public WebSocketDisconnectHandler(SimpMessageSendingOperations messagingTemplate,
-			ActiveWebSocketPlayerRepository repository) {
+			ActiveWebSocketPlayerRepository repository, PlayerRepository playerRepo) {
 		super();
 		this.messagingTemplate = messagingTemplate;
 		this.repository = repository;
+		this.playerRepo = playerRepo;
 	}
 
 	@Override
@@ -43,9 +47,10 @@ public class WebSocketDisconnectHandler<S>
 			return;
 		}
 		this.repository.findById(id).ifPresent((user) -> {
+			Player current = playerRepo.findByEmail(user.getUsername());
 			this.repository.deleteById(id);
 			this.messagingTemplate.convertAndSend("/topic/friends/signout",
-					Arrays.asList(user.getUsername()));
+					current);
 		});
 	}
 }

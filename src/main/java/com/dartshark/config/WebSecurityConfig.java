@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll();
 		
 		http.headers().frameOptions().sameOrigin();
+		http.authorizeRequests().antMatchers("/player/**").authenticated();
 	}
 	// @formatter:on
 

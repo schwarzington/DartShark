@@ -28,17 +28,21 @@ import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 import com.dartshark.data.ActiveWebSocketPlayer;
 import com.dartshark.data.ActiveWebSocketPlayerRepository;
+import com.dartshark.data.Player;
+import com.dartshark.data.PlayerRepository;
 
 public class WebSocketConnectHandler<S>
 		implements ApplicationListener<SessionConnectEvent> {
 	private ActiveWebSocketPlayerRepository repository;
 	private SimpMessageSendingOperations messagingTemplate;
+	private PlayerRepository playerRepo;
 
 	public WebSocketConnectHandler(SimpMessageSendingOperations messagingTemplate,
-			ActiveWebSocketPlayerRepository repository) {
+			ActiveWebSocketPlayerRepository repository, PlayerRepository playerRepo) {
 		super();
 		this.messagingTemplate = messagingTemplate;
 		this.repository = repository;
+		this.playerRepo = playerRepo;
 	}
 
 	@Override
@@ -49,9 +53,10 @@ public class WebSocketConnectHandler<S>
 			return;
 		}
 		String id = SimpMessageHeaderAccessor.getSessionId(headers);
+		Player current = playerRepo.findByEmail(user.getName());
 		this.repository.save(
-				new ActiveWebSocketPlayer(id, user.getName(), Calendar.getInstance()));
+				new ActiveWebSocketPlayer(id, user.getName(), Calendar.getInstance(), current.getFirstName(), current.getLastName()));
 		this.messagingTemplate.convertAndSend("/topic/friends/signin",
-				Arrays.asList(user.getName()));
+				current);
 	}
 }

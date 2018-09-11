@@ -16,14 +16,15 @@
 
 package com.dartshark.config;
 
-import com.dartshark.data.ActiveWebSocketPlayerRepository;
-import com.dartshark.websocket.WebSocketConnectHandler;
-import com.dartshark.websocket.WebSocketDisconnectHandler;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.session.Session;
+
+import com.dartshark.data.ActiveWebSocketPlayerRepository;
+import com.dartshark.data.PlayerRepository;
+import com.dartshark.websocket.WebSocketConnectHandler;
+import com.dartshark.websocket.WebSocketDisconnectHandler;
 
 /**
  * These handlers are separated from WebSocketConfig because they are specific to this
@@ -37,14 +38,14 @@ public class WebSocketHandlersConfig<S extends Session> {
 	@Bean
 	public WebSocketConnectHandler<S> webSocketConnectHandler(
 			SimpMessageSendingOperations messagingTemplate,
-			ActiveWebSocketPlayerRepository repository) {
-		return new WebSocketConnectHandler<>(messagingTemplate, repository);
+			ActiveWebSocketPlayerRepository repository, PlayerRepository playerRepo) {
+		return new WebSocketConnectHandler<>(messagingTemplate, repository, playerRepo);
 	}
 
 	@Bean
 	public WebSocketDisconnectHandler<S> webSocketDisconnectHandler(
 			SimpMessageSendingOperations messagingTemplate,
-			ActiveWebSocketPlayerRepository repository) {
-		return new WebSocketDisconnectHandler<>(messagingTemplate, repository);
+			ActiveWebSocketPlayerRepository repository, PlayerRepository playerRepo) {
+		return new WebSocketDisconnectHandler<>(messagingTemplate, repository, playerRepo);
 	}
 }

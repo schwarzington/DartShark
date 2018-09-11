@@ -3,7 +3,10 @@ function ApplicationModel(stompClient) {
 	var self = this;
 
 	self.friends = ko.observableArray();
+	self.onlineUsers = ko.observableArray();
+	self.dartBoardUrl = ko.observable("dartboard.svg");
 	self.username = ko.observable();
+	self.firstName = ko.observable();
 	self.conversation = ko.observable(new ImConversationModel(stompClient,this.username));
 	self.notifications = ko.observableArray();
 	self.csrfToken = ko.computed(function() {
@@ -17,6 +20,16 @@ function ApplicationModel(stompClient) {
 		}).responseText);
 	}, this);
 
+	$.ajax({
+		type: 'GET',
+			url: 'player/all',
+			dataType: 'json',
+			success: function(data) { 
+				self.allUsers = ko.observableArray(data);
+			},
+			data: {},
+			async: false
+		})
 	self.connect = function() {
 		var headers = {};
 		var csrf = self.csrfToken();
@@ -34,21 +47,23 @@ function ApplicationModel(stompClient) {
 					var friends = JSON.parse(message.body);
 
 					for(var i=0;i<friends.length;i++) {
-							self.friendSignin({"username": friends[i]});
+						self.friendSignin({"username": friends[i]});
 					}
 			});
 			stompClient.subscribe("/topic/friends/signin", function(message) {
+					console.log("SignIn: " + message.body);
 					var friends = JSON.parse(message.body);
 
 					for(var i=0;i<friends.length;i++) {
-							self.friendSignin(new ImFriend({"username": friends[i]}));
+							self.friendSignin(friends[i]);
 					}
 			});
 			stompClient.subscribe("/topic/friends/signout", function(message) {
+					console.log("SignOut: " + message.body);
 					var friends = JSON.parse(message.body);
 
 					for(var i=0;i<friends.length;i++) {
-							self.friendSignout(new ImFriend({"username": friends[i]}));
+							self.friendSignout(friends[i]);
 					}
 			});
 			stompClient.subscribe("/user/queue/messages", function(message) {
@@ -78,6 +93,14 @@ function ApplicationModel(stompClient) {
 		return rows;
 	};
 
+	self.online = function(username){
+		if(onlineUsers.indexOf(username) > -1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	self.pushNotification = function(text) {
 		self.notifications.push({notification: text});
 		if (self.notifications().length > 5) {
@@ -93,10 +116,18 @@ function ApplicationModel(stompClient) {
 	}
 
 	self.friendSignin = function(friend) {
+		if(friend.username.username === self.username()){
+			console.log("Hey this is me!");
+			friend.username.primary = true;
+		} else {
+			friend.username.primary = false;
+		}
+		self.onlineUsers.push(friend.username);
 		self.friends.push(friend);
 	}
 
 	self.friendSignout = function(friend) {
+		self.onlineUsers.remove(friend.username);
 		var r = self.friends.remove(
 			function(item) {
 				item.username == friend.username
@@ -110,6 +141,7 @@ function ImFriend(data) {
 	var self = this;
 
 	self.username = data.username;
+	self.firstName = data.first_name;
 }
 
 function ImConversationModel(stompClient,from) {
