@@ -2,23 +2,66 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;	
-	font-size: 20px;
+	font-weight: 600;
+	font-size: 18px;
 	color: #000;
 	text-align: center;
 	line-height: 60px;
 	margin: 10px;
 	border-style: dashed;
-    border-width: 1px;
+    border-width: 2px;
+
+}
+
+.avatar-offline {
+	background: #e8f1f2;
+	opacity: .5;
+	border-color: #b3b3b3;
 }
 
 .avatar-online {
 	background: #39c65c;
 	opacity: .6;
-	border-color: #009933;
 }
 
 .avatar-offline {
 	background: #e8f1f2;
 	opacity: .5;
 	border-color: #bfbfbf;
+}
+
+.half-trans {
+	opacity: .6;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}
+
+th {
+	text-align:center;
+}
+
+ th,
+ td {
+    padding: 0;
+ }
+
+ .table td, .table th {
+ 	padding: 0;
+ 	border-top: 0;
+}
+
+.bullseye {
+	font-size: 30px;
+	line-height:unset;
+}
+
+.table {
+	margin-left: -20;
 }
