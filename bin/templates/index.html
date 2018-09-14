@@ -23,15 +23,84 @@
 					</object>
 				</div>
 				<div class="col-md-6">
-					<div data-bind="foreach: partitioned(allUsers, 6)">
-						<div  class="row" data-bind="template: { name: 'projectCell', foreach: $data }"></div>
-		 			 </div>
+					<div class="row">
+						<div class="col-md-6">
+							<table class="table borderless">
+							  <thead>
+							    <tr>
+							      <th scope="col"><div class="avatar-initials">1</div></th>
+							      <th scope="col"><div class="avatar-initials">2</div></th>
+							      <th scope="col"></th>
+
+							      <th scope="col"><div class="avatar-initials">3</div></th>
+							   	  <th scope="col"><div class="avatar-initials">4</div></th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th>20</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th>19</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th>18</th>
+							      <td></td>
+							      <td></td>
+							     </tr> 
+							     <tr>
+							      <td></td>
+							      <td></td>
+							      <th>17</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							     <td></td>
+							      <td></td>
+							      <th>16</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							     <td></td>
+							      <td></td>
+							      <th>15</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th>BULL</th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							  </tbody>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<div data-bind="foreach: partitioned(allUsers, 6)">
+								<div  class="row" data-bind="template: { name: 'projectCell', foreach: $data }"></div>
+				 			 </div>
+				 		</div>
+				 	</div>
 				</div>
 		    </div>
 
 		  <script id="projectCell" type="text/html">
-		  	<div class="col-md-1">
-		  		<div class="avatar-initials" data-bind="text: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(), css: { 'avatar-online': online(username)}">
+		  	<div class="col-md-2">
+		  		<div class="avatar-initials" data-bind="text: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(), css: ($root.online(email)) == true ? 'avatar-online' : 'avatar-offline'">
 				</div>
 		  	</div>
 		  </script>

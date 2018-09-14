@@ -53,18 +53,14 @@ function ApplicationModel(stompClient) {
 			stompClient.subscribe("/topic/friends/signin", function(message) {
 					console.log("SignIn: " + message.body);
 					var friends = JSON.parse(message.body);
-
-					for(var i=0;i<friends.length;i++) {
-							self.friendSignin(friends[i]);
-					}
+					self.friendSignin(friends);
+					self.allUsers.valueHasMutated();
 			});
 			stompClient.subscribe("/topic/friends/signout", function(message) {
 					console.log("SignOut: " + message.body);
 					var friends = JSON.parse(message.body);
-
-					for(var i=0;i<friends.length;i++) {
-							self.friendSignout(friends[i]);
-					}
+					self.friendSignout(friends);
+					self.allUsers.valueHasMutated();
 			});
 			stompClient.subscribe("/user/queue/messages", function(message) {
 					self.conversation().receiveMessage(JSON.parse(message.body));
@@ -94,11 +90,7 @@ function ApplicationModel(stompClient) {
 	};
 
 	self.online = function(username){
-		if(onlineUsers.indexOf(username) > -1) {
-			return true;
-		} else {
-			return false;
-		}
+        return self.onlineUsers().indexOf(username) >= 0;
 	}
 
 	self.pushNotification = function(text) {
@@ -116,21 +108,32 @@ function ApplicationModel(stompClient) {
 	}
 
 	self.friendSignin = function(friend) {
-		if(friend.username.username === self.username()){
-			console.log("Hey this is me!");
-			friend.username.primary = true;
+		if(friend.email) {
+			self.onlineUsers.push(friend.email);
+			if(friend.email === self.username()){
+				console.log("Hey this is me!");
+				friend.username.primary = true;
+			} else {
+				friend.username.primary = false;
+			}
 		} else {
-			friend.username.primary = false;
+			self.onlineUsers.push(friend.username.username);
+			if(friend.username.username === self.username()){
+				console.log("Hey this is me!");
+				friend.username.primary = true;
+			} else {
+				friend.username.primary = false;
+			}
 		}
-		self.onlineUsers.push(friend.username);
+		
 		self.friends.push(friend);
 	}
 
 	self.friendSignout = function(friend) {
-		self.onlineUsers.remove(friend.username);
+		self.onlineUsers.remove(friend.email);
 		var r = self.friends.remove(
 			function(item) {
-				item.username == friend.username
+				item.username == friend.email
 			}
 		);
 		self.friends(r);

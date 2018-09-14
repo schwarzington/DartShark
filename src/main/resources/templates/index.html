@@ -2,6 +2,7 @@
 <head>
 	<title>View All</title>
 	<link rel="stylesheet" href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/webjars/font-awesome/5.3.1/css/all.min.css" />
 	<link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,14 +24,83 @@
 					</object>
 				</div>
 				<div class="col-md-6">
-					<div data-bind="foreach: partitioned(allUsers, 6)">
-						<div  class="row" data-bind="template: { name: 'projectCell', foreach: $data }"></div>
-		 			 </div>
+					<div class="row">
+						<div class="col-md-6">
+							<table class="table borderless">
+							  <thead>
+							    <tr>
+							      <th scope="col"><div class="avatar-initials">1</div></th>
+							      <th scope="col"><div class="avatar-initials">2</div></th>
+							      <th scope="col"><div class="avatar-initials"><img src="shark.png"/></div></th>
+
+							      <th scope="col"><div class="avatar-initials">3</div></th>
+							   	  <th scope="col"><div class="avatar-initials">4</div></th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">20</div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">19</div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">18</div></th>
+							      <td></td>
+							      <td></td>
+							     </tr> 
+							     <tr>
+							      <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">17</div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							     <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">16</div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							     <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials">15</div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							    <tr>
+							      <td></td>
+							      <td></td>
+							      <th><div class="avatar-initials"><i class="fa fa-bullseye bullseye"></i></div></th>
+							      <td></td>
+							      <td></td>
+							    </tr>
+							  </tbody>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<div data-bind="foreach: partitioned(allUsers, 6)">
+								<div  class="row" data-bind="template: { name: 'projectCell', foreach: $data }"></div>
+				 			 </div>
+				 		</div>
+				 	</div>
 				</div>
 		    </div>
 
 		  <script id="projectCell" type="text/html">
-		  	<div class="col-md-1">
+		  	<div class="col-md-2">
 		  		<div class="avatar-initials" data-bind="text: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(), css: ($root.online(email)) == true ? 'avatar-online' : 'avatar-offline'">
 				</div>
 		  	</div>
@@ -46,6 +116,7 @@
 	<script th:src="@{/webjars/knockout/knockout.js}" src="/webjars/knockout/knockout.js"></script>
 	<script th:src="@{/webjars/sockjs-client/sockjs.min.js}" src="/webjars/sockjs-client/sockjs.min.js"></script>
 	<script th:src="@{/webjars/stomp-websocket/stomp.min.js}" src="/webjars/stomp-websocket/stomp.min.js"></script>
+
 
 
 	<!-- application -->
